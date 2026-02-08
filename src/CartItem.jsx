@@ -19,14 +19,30 @@ const CartItem = ({ onContinueShopping }) => {
         onContinueShopping(e);
     };
 
+    const handleCheckout = () => {
+        alert('Thank you for your purchase! This is a demo checkout.');
+    };
+
     const handleIncrement = (item) => {
+        dispatch(updateQuantity({
+            id: item.id,
+            quantity: item.quantity + 1
+        }));
     };
 
     const handleDecrement = (item) => {
-
+        if (item.quantity > 1) {
+            dispatch(updateQuantity({
+                id: item.id,
+                quantity: item.quantity - 1
+            }));
+        } else {
+            dispatch(removeItem(item.id));
+        }
     };
 
     const handleRemove = (item) => {
+        dispatch(removeItem(item.id));
     };
 
     // Calculate total cost based on quantity for an item
@@ -40,7 +56,7 @@ const CartItem = ({ onContinueShopping }) => {
             <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
             <div>
                 {cart.map(item => (
-                    <div className="cart-item" key={item.name}>
+                    <div className="cart-item" key={item.id}>
                         <img className="cart-item-image" src={item.image} alt={item.name} />
                         <div className="cart-item-details">
                             <div className="cart-item-name">{item.name}</div>
@@ -60,7 +76,7 @@ const CartItem = ({ onContinueShopping }) => {
             <div className="continue_shopping_btn">
                 <button className="get-started-button" onClick={(e) => handleContinueShopping(e)}>Continue Shopping</button>
                 <br />
-                <button className="get-started-button1">Checkout</button>
+                <button className="get-started-button1" onClick={handleCheckout}>Checkout</button>
             </div>
         </div>
     );
